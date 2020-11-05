@@ -6,7 +6,7 @@ name: jd_xtg
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 16 * * *' #北京时间0点运行，action会有延迟
+    - cron: '30 15 * * *' #北京时间0点运行，action会有延迟
   watch:
     types: started
   repository_dispatch:
@@ -25,6 +25,13 @@ jobs:
       - name: npm install
         run: |
           npm install
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: 阻塞运行
+        run: |
+          python3 wait24.py
       - name: '运行 【星推官脚本】'
         run: |
           node jd_xtg.js
