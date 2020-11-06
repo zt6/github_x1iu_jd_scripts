@@ -6,7 +6,7 @@ name: jd_shop
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 16 * * *'
+    - cron: '40 15 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -24,6 +24,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: 阻塞运行
+        run: |
+          python3 wait24.py
       - name: npm install
         run: |
           cd ~/scripts
