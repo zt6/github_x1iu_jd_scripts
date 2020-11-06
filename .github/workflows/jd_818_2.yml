@@ -29,7 +29,7 @@ jobs:
           python-version: 3.7
       - name: 阻塞运行
         run: |
-          python3 ~/wait24.py
+          python3 ~/scripts/wait24.py
       - name: '运行 【手机狂欢城脚本】'
         run: |
           cd ~/scripts
