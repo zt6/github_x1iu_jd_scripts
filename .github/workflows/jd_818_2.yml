@@ -3,7 +3,7 @@ name: jd_818_2
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 16 * * *'
+    - cron: '40 15 * * *'
   watch:
     types: started
 jobs:
