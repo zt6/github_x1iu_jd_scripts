@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: Checkout
         run: |
-          git clone https://github.com/lxk0301/scripts.git ~/scripts
+          git clone https://github.com/Super-pixle/scripts.git ~/scripts
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
         with:
