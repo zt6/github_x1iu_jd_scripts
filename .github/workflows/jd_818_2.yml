@@ -19,6 +19,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 10.x
+      - name: npm install
+        run: |
+          cd ~/scripts
+          npm install
       - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
@@ -26,10 +30,6 @@ jobs:
       - name: 阻塞运行
         run: |
           python3 wait24.py
-      - name: npm install
-        run: |
-          cd ~/scripts
-          npm install
       - name: '运行 【手机狂欢城脚本】'
         run: |
           cd ~/scripts
