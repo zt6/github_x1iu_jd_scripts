@@ -6,7 +6,7 @@ name: jd_818
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1,4,7,10,12,16,22 * * *'
+    - cron: '50 0,3,6,9,11,15,21 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Checkout
         run: |
-          git clone https://github.com/lxk0301/scripts.git ~/scripts
+          git clone https://github.com/Super-pixle/scripts.git ~/scripts
       - name: Use Node.js 10.x
         uses: actions/setup-node@v1
         with:
@@ -28,6 +28,14 @@ jobs:
         run: |
           cd ~/scripts
           npm install
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: 阻塞运行
+        run: |
+          cd ~/scripts
+          python3 wait24.py
       - name: '运行 【手机狂欢城脚本】'
         run: |
           cd ~/scripts
