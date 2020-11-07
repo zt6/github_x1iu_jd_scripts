@@ -1,7 +1,14 @@
 import time
 import datetime
 import logging
+import sys
 
-while datetime.datetime.now().hour != 16:
-    logging.warn(f'{datetime.datetime.now()}未到时间')
-    time.sleep(5)
+sleep_gap = 3
+if len(sys.argv) == 2:
+    sleep_gap = int(sys.argv[1])
+
+target_hour = datetime.datetime.now().hour + 1
+    
+while datetime.datetime.now().hour != target_hour:
+    logging.warn(f'{datetime.datetime.now()}未到{target_hour}点')
+    time.sleep(sleep_gap)
