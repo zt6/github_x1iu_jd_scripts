@@ -31,7 +31,7 @@ jobs:
           python-version: 3.7
       - name: 阻塞运行
         run: |
-          python3 wait24.py
+          python3 wait24.py 1
       - name: '运行 【星推官脚本】'
         run: |
           node jd_xtg.js
