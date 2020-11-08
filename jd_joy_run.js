@@ -1,12 +1,12 @@
 /**
  宠汪汪邀请助力与赛跑助力脚本，感谢github@Zero-S1提供帮助
- 更新时间：2020-10-14
+ 更新时间：2020-11-07（宠汪汪助力更新Token的配置正则表达式已改）
 
  token时效很短，几个小时就失效了,闲麻烦的放弃就行
  每天拿到token后，可一次性运行完毕即可。
  互助码friendPin是京东用户名，不是昵称（可在京东APP->我的->设置 查看获得）
  token获取途径：
- 1、微信搜索'来客有礼'小程序,登陆京东账号，点击底部的'发现'Tab,即可获取Token，脚本运行提示token失效后，继续按此方法获取即可
+ 1、微信搜索'来客有礼'小程序,登陆京东账号，点击底部的'我的'Tab,即可获取Token，脚本运行提示token失效后，继续按此方法获取即可
  2、或者每天去'来客有礼'小程序->宠汪汪里面，领狗粮->签到领京豆 也可获取Token(此方法每天只能获取一次)
  脚本里面有内置提供的friendPin，如果你没有修改脚本或者BoxJs处填写自己的互助码，会默认给脚本内置的助力。
  [MITM]
@@ -15,7 +15,7 @@
  [Script]
  宠汪汪邀请助力与赛跑助力 = type=cron,cronexp="15 10 * * *",wake-system=1,timeout=20,script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js
  宠汪汪助力更新Token = type=http-response,pattern=^https:\/\/draw\.jdfcloud\.com\/\/api\/user\/addUser\?code=\w+&, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js
- 宠汪汪助力获取Token = type=http-request,pattern=^https:\/\/draw\.jdfcloud\.com\/\/api\/bean\/square\/silverBean\/task\/get\?, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js
+ 宠汪汪助力获取Token = type=http-request,pattern=^https:\/\/draw\.jdfcloud\.com\/\/api\/user\/user\/detail\?openId=\w+&, requires-body=1, max-size=0, script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js
  圈X
  [task_local]
  # 宠汪汪邀请助力与赛跑助力
@@ -24,12 +24,12 @@
  # 宠汪汪助力更新Token
  ^https:\/\/draw\.jdfcloud\.com\/\/api\/user\/addUser\?code=\w+& url script-response-body https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js
  # 宠汪汪助力获取Token
- ^https:\/\/draw\.jdfcloud\.com\/\/api\/bean\/square\/silverBean\/task\/get\? url script-request-header https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js
+ ^https:\/\/draw\.jdfcloud\.com\/\/api\/user\/user\/detail\?openId=\w+& url script-request-header https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js
  LOON：
  [Script]
  cron "15 10 * * *" script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js, tag=宠汪汪邀请助力与赛跑助力
  http-response ^https:\/\/draw\.jdfcloud\.com\/\/api\/user\/addUser\?code=\w+& script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js, requires-body=true, timeout=10, tag=宠汪汪助力更新Token
- http-request ^https:\/\/draw\.jdfcloud\.com\/\/api\/bean\/square\/silverBean\/task\/get\? script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js, requires-body=true, timeout=10, tag=宠汪汪助力获取Token
+ http-request ^https:\/\/draw\.jdfcloud\.com\/\/api\/user\/user\/detail\?openId=\w+& script-path=https://raw.githubusercontent.com/lxk0301/scripts/master/jd_joy_run.js, requires-body=true, timeout=10, tag=宠汪汪助力获取Token
  **/
 const isRequest = typeof $request != "undefined"
 const $ = new Env('来客有礼宠汪汪');
@@ -109,18 +109,21 @@ function getToken() {
     }
     $.setdata(LKYLToken, 'jdJoyRunToken');
     $.done({ body: JSON.stringify(body) })
-  } else if (isURL(url, /^https:\/\/draw\.jdfcloud\.com\/\/api\/bean\/square\/silverBean\/task\/get\?/)){
+  } else if (isURL(url, /^https:\/\/draw\.jdfcloud\.com\/\/api\/user\/user\/detail\?openId=\w+&/)){
     if ($request && $request.method !== 'OPTIONS') {
       const LKYLToken = $request.headers['LKYLToken'];
-      if ($.getdata('jdJoyRunToken')) {
-        if ($.getdata('jdJoyRunToken') !== LKYLToken) {
+      //if ($.getdata('jdJoyRunToken')) {
+        //if ($.getdata('jdJoyRunToken') !== LKYLToken) {
 
-        }
+        //}
         //$.msg($.name, '更新获取Token: 成功🎉', `\n${LKYLToken}\n`);
-      } else {
-        $.msg($.name, '获取Token: 成功🎉', `\n${LKYLToken}\n`);
-      }
+      //} else {
+        //$.msg($.name, '获取Token: 成功🎉', `\n${LKYLToken}\n`);
+      //}
       $.setdata(LKYLToken, 'jdJoyRunToken');
+
+      $.msg($.name, '获取Token: 成功🎉', `\n${LKYLToken}\n`);
+
       // $.done({ body: JSON.stringify(body) })
       $.done({ url: url })
     }
