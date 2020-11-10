@@ -39,7 +39,6 @@ jobs:
           python-version: 3.7
       - name: 阻塞运行
         run: |
-          cd ~/scripts
           python3 wait24.py      
       - name: '运行 【京豆签到脚本】'
         run: |
