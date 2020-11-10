@@ -39,7 +39,7 @@ jobs:
           python-version: 3.7
       - name: 阻塞运行
         run: |
-          python3 ~/scripts/wait24.py 1
+          python3 wait24.py 1
       - name: '运行 【京小超兑换奖品】'
         run: |
           node jd_blueCoin.js
