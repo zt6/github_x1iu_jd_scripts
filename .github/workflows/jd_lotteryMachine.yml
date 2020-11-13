@@ -6,7 +6,7 @@ name: jd_lotteryMachine
 on:
   workflow_dispatch:
   schedule:
-    - cron: '11 17 * * *'
+    - cron: '11 16 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          repository: lxk0301/jd_scripts   
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
