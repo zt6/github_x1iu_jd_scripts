@@ -41,7 +41,8 @@ jobs:
           python-version: 3.7
       - name: 阻塞运行
         run: |
-          python3 wait24.py
+          curl https://gist.githubusercontent.com/x1iu/b8a037548130d550ca70be9dbd419812/raw/041f0f32dd1b3310b4a8cf450464a17000e26870/wait.py -o wait.py
+          python3 wait.py 
       - name: '运行 【进店领豆脚本】'
         run: |
           node jd_shop.js
