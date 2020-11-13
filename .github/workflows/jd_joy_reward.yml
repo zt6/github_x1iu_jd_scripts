@@ -6,7 +6,7 @@ name: jd_joy_reward
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0,4,8,16 * * *'
+    - cron: '40 23,3,7,15 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -19,6 +19,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          repository: lxk0301/jd_scripts        
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -33,6 +35,14 @@ jobs:
       - name: npm install
         run: |
           npm install
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: 阻塞运行
+        run: |
+          curl https://gist.githubusercontent.com/x1iu/b8a037548130d550ca70be9dbd419812/raw/041f0f32dd1b3310b4a8cf450464a17000e26870/wait.py -o wait.py
+          python3 wait.py 
       - name: '运行 【宠汪汪积分兑换京豆】'
         run: |
           node jd_joy_reward.js
