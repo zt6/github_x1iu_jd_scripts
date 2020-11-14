@@ -8,6 +8,8 @@ if len(sys.argv) == 2:
     sleep_gap = int(sys.argv[1])
 
 target_hour = datetime.datetime.now().hour + 1
+if target_hour == 24:
+    target_hour = 0
     
 while datetime.datetime.now().hour != target_hour:
     logging.warn(f'{datetime.datetime.now()}未到{target_hour}点')
