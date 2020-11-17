@@ -6,7 +6,7 @@ name: jd_joy_reward
 on:
   workflow_dispatch:
   schedule:
-    - cron: '40 23,3,7,15 * * *'
+    - cron: '45-50 23,3,7,15 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -41,8 +41,8 @@ jobs:
           python-version: 3.7
       - name: 阻塞运行
         run: |
-          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/wait24.py -o wait.py
-          python3 wait.py 1
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
+          python3 wait.py
       - name: '运行 【宠汪汪积分兑换京豆】'
         run: |
           node jd_joy_reward.js
