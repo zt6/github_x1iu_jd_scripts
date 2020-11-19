@@ -17,13 +17,15 @@ second_setting = int(start_time)
 ms_setting = int((start_time - second_setting)*10**6)
 
 target_time = datetime.datetime.now()
-target_time = target_time.replace(minute=59, second=second_setting, microsecond=ms_setting)
 
-i=0
-while datetime.datetime.now() < target_time:
-    i += 1
-    if i % 30 == 0:
-        logging.warn(f'{datetime.datetime.now()}未到{target_time}点')
-    time.sleep(0.03)
+if target_time.minute > 20:
+    target_time = target_time.replace(minute=59, second=second_setting, microsecond=ms_setting)
 
-time.sleep(random.random()*interval)
+    i=0
+    while datetime.datetime.now() < target_time:
+        i += 1
+        if i % 30 == 0:
+            logging.warn(f'{datetime.datetime.now()}未到{target_time}点')
+        time.sleep(0.03)
+
+    time.sleep(random.random()*interval)
