@@ -1,0 +1,18 @@
+name: get_aboard
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 1,10,20 * *'
+
+jobs:
+  deploy:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 提交互助码
+      run: |
+        curl http://api.turinglabs.net/api/v1/jd/bean/create/73qwpzbx4mgajmucs65vsdvscaakk7n7w35ivjy/
+        curl http://api.turinglabs.net/api/v1/jd/farm/create/e2e5e1be41dd42a3b5f1351f5ede6842/
+        curl http://api.turinglabs.net/api/v1/jd/pet/create/MTE1NDQ5OTIwMDAwMDAwMzkzODIxNjc=/
