@@ -42,7 +42,7 @@ jobs:
       - name: 阻塞运行
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
-          python3 wait.py
+          python3 wait.py 2 2
       - name: '运行 【京小超兑换奖品】'
         run: |
           node jd_blueCoin.js
