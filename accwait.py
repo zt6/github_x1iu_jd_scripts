@@ -18,7 +18,7 @@ ms_setting = int((start_time - second_setting)*10**6)
 
 target_time = datetime.datetime.now()
 
-if target_time.minute > 20:
+if target_time.minute > 30:
     target_time = target_time.replace(minute=59, second=second_setting, microsecond=ms_setting)
 
     i=0
