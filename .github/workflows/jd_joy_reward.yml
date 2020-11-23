@@ -1,13 +1,9 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: jd_joy_reward
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '40,41,42 23,3,7 * * *'
-    - cron: '40 15 * * *'
+    - cron: '40 23,3,7,15 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -43,11 +39,15 @@ jobs:
       - name: 阻塞运行
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
-          python3 wait.py
+          python3 wait.py 3.5 0.1
       - name: '运行 【宠汪汪积分兑换京豆】'
         run: |
-          node jd_joy_reward.js
-          node jd_joy_reward.js
+          for ((a=1; a <= 15; a++))
+          do
+              node jd_joy_reward.js &
+              sleep 0.17
+          done
+          sleep 10
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}

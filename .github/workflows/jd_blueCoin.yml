@@ -1,19 +1,14 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
-
 name: jd_blueCoin
-
 on:
   workflow_dispatch:
   schedule:
-    - cron: '40-45 15,6 * * *'
+    - cron: '40 15,6 * * *'
   watch:
     types: started
   repository_dispatch:
     types: blueCoin
 jobs:
   build:
-
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
@@ -42,10 +37,15 @@ jobs:
       - name: 阻塞运行
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
-          python3 wait.py 2 2
+          python3 wait.py 3 1
       - name: '运行 【京小超兑换奖品】'
         run: |
-          node jd_blueCoin.js
+          for ((a=1; a <= 15; a++))
+          do
+              node jd_blueCoin.js &
+              sleep 0.15
+          done
+          sleep 10
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
