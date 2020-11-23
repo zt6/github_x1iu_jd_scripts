@@ -1,13 +1,13 @@
-name: jd_club_lottery
+name: jdzz
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '40 15 * * *'
+    - cron: '0 17 * * *'
   watch:
     types: started
   repository_dispatch:
-    types: club_lottery
+    types: jdzz
 jobs:
   build:
 
