@@ -31,18 +31,11 @@ jobs:
           key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }} # 使用 package-lock.json 的 Hash 作为缓存的 key。也可以使用 package.json 代替
       - name: npm install
         run: |
-          npm install
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-      - name: 阻塞运行
+          npm install 
+      - name: '运行 【京东赚赚】'
         run: |
-          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/wait24.py -o wait.py
-          python3 wait.py  
-      - name: '运行 【摇京豆脚本】'
-        run: |
-          node jd_club_lottery.js
+          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js -o jdzz.js
+          node jdzz.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
