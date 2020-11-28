@@ -33,12 +33,12 @@ jobs:
       - name: npm install
         run: |
           npm install 
-      - name: '运行 【京东赚赚】'
+      - name: '运行 '
         run: |
           curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory.js -o jxgc.js
           node jxgc.js
-          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js -o jdzz.js
-          node jdzz.js
+          # curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js -o jdzz.js
+          # node jdzz.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
