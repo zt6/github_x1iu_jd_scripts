@@ -36,6 +36,7 @@ jobs:
       - name: '运行jd_dreamFactory'
         run: |
           node jd_dreamFactory.js
+          sleep 60m
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
