@@ -2,8 +2,8 @@ name: jd_dreamFactory
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '30 * * * *'
+  # schedule:
+  #   - cron: '30 * * * *'
   watch:
     types: started
   repository_dispatch:
@@ -47,3 +47,8 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }}
+          event-type: jd_dreamFactory

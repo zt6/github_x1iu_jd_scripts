@@ -16,3 +16,5 @@ jobs:
         curl http://api.turinglabs.net/api/v1/jd/bean/create/73qwpzbx4mgajmucs65vsdvscaakk7n7w35ivjy/
         curl http://api.turinglabs.net/api/v1/jd/farm/create/e2e5e1be41dd42a3b5f1351f5ede6842/
         curl http://api.turinglabs.net/api/v1/jd/pet/create/MTE1NDQ5OTIwMDAwMDAwMzkzODIxNjc=/
+        curl http://api.turinglabs.net/api/v1/jd/jxfactory/create/-NleQwfy3EBCb28rb4we-w==/
+        curl http://api.turinglabs.net/api/v1/jd/ddfactory/create/P04z54XCjVWnYaS5nQMD2n51XtXl6HxWCE_/
