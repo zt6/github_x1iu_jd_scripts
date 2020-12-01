@@ -35,7 +35,8 @@ jobs:
           npm install
       - name: '运行jd_dreamFactory'
         run: |
-          node jd_joy_run.js
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jd_joy_run.js -o my_run.js
+          node my_run.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
