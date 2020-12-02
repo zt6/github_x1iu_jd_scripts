@@ -35,8 +35,7 @@ jobs:
           npm install
       - name: '运行jd_dreamFactory'
         run: |
-          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_story.js -o my_run.js
-          node my_run.js
+          node jd_jxstory.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
