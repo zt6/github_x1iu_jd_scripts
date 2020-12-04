@@ -36,8 +36,6 @@ jobs:
       - name: '运行jd_dreamFactory'
         run: |
           node jd_dreamFactory.js
-          sleep 3900s
-          sleep $(($RANDOM%90))
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
@@ -49,6 +47,14 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
+  dispatch:
+    runs-on: ubuntu-latest
+    if: github.event.repository.owner.id == github.event.sender.id
+    steps:
+      - name: 'wait'
+        run: |
+          sleep 65m
+          sleep $(($RANDOM%60))
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
