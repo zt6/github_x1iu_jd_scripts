@@ -43,7 +43,8 @@ jobs:
           sleep $(($RANDOM%60))
       - name: '运行jd_live_redrain'
         run: |
-          node jd_live_redrain.js
+          curl https://raw.githubusercontent.com/lxk0301/jd_scripts/4b65ad5a8371f01602461f3b3d72d01c1983c03a/jd_live_redrain.js -o jd_live_redrain2.js
+          node jd_live_redrain2.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
