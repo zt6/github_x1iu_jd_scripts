@@ -3,7 +3,7 @@ name: jd_live_redrain
 on:
   workflow_dispatch:
   schedule:
-    - cron: '45 0,2,4,6,8,10,11,12,14,15 * * *'
+    - cron: '35 0,2,4,6,8,10,11,12,14,15 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -40,6 +40,7 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/wait24.py -o wait.py
           python3 wait.py
+          sleep $(($RANDOM%60))
       - name: '运行jd_live_redrain'
         run: |
           node jd_live_redrain.js
