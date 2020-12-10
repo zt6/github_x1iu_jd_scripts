@@ -706,7 +706,7 @@ async function stealFriend() {
   $.friendList = [...new Set($.friendList)];
   for (let i = 0; i < $.friendList.length; i++) {
     let pin = $.friendList[i];//好友的encryptPin
-    await PickUp(pin, true);
+    // await PickUp(pin, true);
     await getFactoryIdByPin(pin);//获取好友工厂ID
     if ($.stealFactoryId) await collectElectricity($.stealFactoryId,true, pin);
   }
