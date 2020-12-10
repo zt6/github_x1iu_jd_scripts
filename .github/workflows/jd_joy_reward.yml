@@ -40,13 +40,13 @@ jobs:
       - name: 阻塞运行
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
-          python3 wait.py 2 0.1
+          python3 wait.py 1 0.1
       - name: '运行 【宠汪汪积分兑换京豆】'
         run: |
           for ((a=1; a <= 10; a++))
           do
               node jd_joy_reward.js &
-              sleep 0.17
+              sleep 0.3
           done
           sleep 10
         env:
