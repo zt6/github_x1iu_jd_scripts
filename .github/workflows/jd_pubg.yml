@@ -34,8 +34,7 @@ jobs:
           npm install
       - name: '运行jd_pubg'
         run: |
-          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/pubg.js -o jd_pubg2.js
-          node jd_pubg2.js
+          node jd_pubg.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
