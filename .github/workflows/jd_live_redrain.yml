@@ -40,7 +40,8 @@ jobs:
         run: |	
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/wait24.py -o wait.py	
           python3 wait.py	
-          sleep $(($RANDOM%60))	
+          sleep 10
+          sleep $(($RANDOM%6))	
       - name: '运行jd_live_redrain'	
         run: |	
           node jd_live_redrain.js	
