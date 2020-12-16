@@ -34,7 +34,7 @@ jobs:
           npm install
       - name: '运行jd_watch'
         run: |
-          curl https://github.com/lxk0301/jd_scripts/blob/ba98bf5aae56f27bcff97701c8c492e65a013ad1/jd_watch.js -o jd_watch.js
+          curl https://raw.githubusercontent.com/lxk0301/jd_scripts/ba98bf5aae56f27bcff97701c8c492e65a013ad1/jd_watch.js -o jd_watch.js
           node jd_watch.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
