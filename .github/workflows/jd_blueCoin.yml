@@ -38,13 +38,13 @@ jobs:
       - name: 阻塞运行
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
-          python3 wait.py 3 1
+          python3 wait.py 2.5 0.1
       - name: '运行 【京小超兑换奖品】'
         run: |
           for ((a=1; a <= 15; a++))
           do
               node jd_blueCoin.js &
-              sleep 0.15
+              sleep 0.18
           done
           sleep 10
         env:
