@@ -39,12 +39,16 @@ jobs:
       - name: 阻塞运行	
         run: |	
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/wait24.py -o wait.py	
-          python3 wait.py	
-          sleep 60
-          sleep $(($RANDOM%6))	
+          python3 wait.py		
       - name: '运行jd_live_redrain'	
-        run: |	
-          node jd_live_redrain.js	
+        run: |
+          sleep $(($RANDOM%6))
+          node jd_live_redrain.js
+          sleep 60
+          sleep $(($RANDOM%6))
+          node jd_live_redrain.js
+          sleep 60
+          node jd_live_redrain.js
         env:	
           JD_COOKIE: ${{ secrets.JD_COOKIE }}	
           JD_DEBUG: ${{ secrets.JD_DEBUG }}	
