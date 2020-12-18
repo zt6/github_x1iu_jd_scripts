@@ -61,10 +61,21 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
-      - name: 'wait'
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: x1iu/jd_scripts
+          ref: 'master'
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: '运行wait'
         run: |
-          sleep 75m
-          sleep $(($RANDOM%60))
+          pip3 install requests
+          python3 jd_dream_factory_wait.py
+        env:
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:

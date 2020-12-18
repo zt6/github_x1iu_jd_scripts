@@ -1,8 +1,10 @@
 import requests
 import time
 import os
+import random
 
 if __name__ == "__main__":
+    time.sleep(600)
 
     JD_API_HOST = 'https://m.jingxi.com'
     function_id = 'userinfo/GetUserInfo'
@@ -20,7 +22,15 @@ if __name__ == "__main__":
     }
     url = f'{JD_API_HOST}/dreamfactory/{function_id}?zone=dream_factory&{body}&sceneval=2&g_login_type=1&_time={int(time.time()*1000)}&_={int(time.time()*1000)}'
 
-    get_ret = requests.get(url, headers=headers).json()
-    
-    print(get_ret['data']['user']['currentLevel'])
+    try:
+        get_ret = requests.get(url, headers=headers).json()
+        level = get_ret['data']['user']['currentLevel']
+    except:
+        time.sleep(90*60)
+
+    wait_minutes = 35 + 5 * level
+    time.sleep(wait_minutes*60)
+    time.sleep(random.randint(15, 45))
+
+
 
