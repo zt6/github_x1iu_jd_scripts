@@ -18,6 +18,7 @@ jobs:
           python-version: 3.7
       - name: '运行test'
         run: |
+          pip3 install requests
           python3 jd_dream_factory_wait.py
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
