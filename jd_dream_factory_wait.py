@@ -9,7 +9,7 @@ if __name__ == "__main__":
     JD_API_HOST = 'https://m.jingxi.com'
     function_id = 'userinfo/GetUserInfo'
     body = 'pin=&sharePin=&shareType=&materialTuanPin=&materialTuanId='
-    cookie = os.environ['JD_COOKIE']
+    cookie = os.environ['JD_COOKIE'].split('\n')[0]
     headers = {
       'Cookie': cookie,
       'Host': 'm.jingxi.com',
