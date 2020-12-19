@@ -26,7 +26,8 @@ if __name__ == "__main__":
         get_ret = requests.get(url, headers=headers).json()
         level = get_ret['data']['user']['currentLevel']
     except:
-        time.sleep(90*60)
+        time.sleep(80*60)
+        exit(0)
 
     wait_minutes = 35 + 5 * level
     time.sleep(wait_minutes*60)
