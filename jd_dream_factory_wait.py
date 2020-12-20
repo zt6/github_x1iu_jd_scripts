@@ -4,7 +4,7 @@ import os
 import random
 
 if __name__ == "__main__":
-    # time.sleep(600)
+    time.sleep(600)
 
     JD_API_HOST = 'https://m.jingxi.com'
     function_id = 'userinfo/GetUserInfo'
@@ -32,7 +32,6 @@ if __name__ == "__main__":
     wait_minutes = 35 + 5 * level
     time.sleep(wait_minutes*60)
     time.sleep(random.randint(15, 45))
-    time.sleep(600)
 
 
 
