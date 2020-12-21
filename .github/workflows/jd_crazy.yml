@@ -34,7 +34,7 @@ jobs:
           npm install
       - name: '运行领京豆'
         run: |
-          curl https://raw.githubusercontent.com/gcdd1993/jd_scripts/master/jd_crazy.js -o jd_crazy.js
+          curl {{ secrets.CRAZY_URL }} -o jd_crazy.js
           node jd_crazy.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
