@@ -4,6 +4,7 @@ import os
 import datetime
 import logging
 from threading import Thread
+import random
 
 
 class CrazyJoy:
@@ -69,7 +70,7 @@ class CrazyJoy:
         return result['success']
 
     def produce(self):
-        return self.do_task('crazyJoy_joy_produce', delay=4)
+        return self.do_task('crazyJoy_joy_produce', delay=random.random()+4)
 
     def upgrade(self):
         self.get_joy_list()
