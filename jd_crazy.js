@@ -58,7 +58,7 @@ class CrazyJoy {
     await this.gameState()
     await this.doSign()
     setInterval(__ => this.produce(), PRODUCE_SLEEP)
-    setInterval(__ => this.checkAndMerge(), MERGE_SLEEP)
+    // setInterval(__ => this.checkAndMerge(), MERGE_SLEEP)
   }
 
   async checkAndMerge() {
