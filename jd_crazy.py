@@ -41,7 +41,7 @@ class CrazyJoy:
         "targetBoxIndex": to
         }
         result = self.do_task(function_id, body)
-        logging.info(result)
+        logging.warn(result)
     
     def get_joy_list(self):
         function_id = 'crazyJoy_user_gameState'
@@ -96,7 +96,7 @@ class CrazyJoy:
                     else:
                         move_position.append(i)
                         break
-            logging.info(move_position)
+            logging.warn(move_position)
             self.move_or_merge(*move_position)
 
         else:
@@ -135,7 +135,7 @@ class CrazyJoy:
 def produce_main(crazy_joy):
     while True:
         try:
-            logging.info(crazy_joy.produce())
+            logging.warn(crazy_joy.produce())
         except:
             time.sleep(5)
 
