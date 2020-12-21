@@ -3,6 +3,7 @@ import time
 import os
 import datetime
 import logging
+from threading import Thread
 
 
 class CrazyJoy:
@@ -14,7 +15,7 @@ class CrazyJoy:
         self.top_level = None
         self.get_joy_list()
 
-    def do_task(self, function_id, body=None, delay=2):
+    def do_task(self, function_id, body=None, delay=5):
         if body is None:
             body = dict()
 
@@ -68,7 +69,7 @@ class CrazyJoy:
         return result['success']
 
     def produce(self):
-        return self.do_task('crazyJoy_joy_produce', delay=1)
+        return self.do_task('crazyJoy_joy_produce', delay=4)
 
     def upgrade(self):
         self.get_joy_list()
@@ -84,7 +85,8 @@ class CrazyJoy:
                     return
                 else:
                     time.sleep(300)
-            self.buy_joy(lowest_level)
+            if not self.buy_joy(lowest_level):
+                time.sleep(300)
             self.get_joy_list()
             move_position = []
             flag = False
@@ -144,6 +146,7 @@ if __name__ == "__main__":
     start_time = datetime.datetime.now()
     cookie = os.environ['JD_COOKIE'].split('\n')[0]
     crazy_joy = CrazyJoy(cookie)
+    Thread(target=produce_main, args=(crazy_joy,)).start()
     while (datetime.datetime.now() - start_time).total_seconds() < 60*60*5:
         try:
             crazy_joy.upgrade()
