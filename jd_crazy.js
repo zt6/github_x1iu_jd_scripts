@@ -1,19 +1,11 @@
-/**
- * 疯狂的joy
- *
- * - 签到
- * - 挂机
- * - 购买、合并joy
- */
-
 const $ = new Env('疯狂的joy');
 let cookiesArr = [], cookie = '', isBox = false, notify;
 let message = '', subTitle = '', option = {};
 let jdNotify = false;//是否关闭通知，false打开通知推送，true关闭通知推送
 const JD_API_HOST = 'https://api.m.jd.com';
 let randomCount = $.isNode() ? 20 : 5;
-$.joyIds = []
-const BUY_JOY_LEVEL = 1
+const PRODUCE_SLEEP = 1000 // 多久模拟挂机一次
+const MERGE_SLEEP = 1000 * 60 // 多久购买合并
 
 !(async () => {
   await requireConfig();
@@ -40,10 +32,7 @@ const BUY_JOY_LEVEL = 1
         }
         continue
       }
-      await gameState()
-      await doSign()
-      await produce()
-      await checkAndMerge()
+      await new CrazyJoy(i, cookie, $.nickName).start()
     }
   }
 })()
@@ -54,286 +43,306 @@ const BUY_JOY_LEVEL = 1
     $.done();
   })
 
-async function checkAndMerge() {
-  // 购买
-  await joyList()
-  console.log(`joy列表 ${$.joyIds}`)
-  for (let i = 0; i < $.joyIds.length; i++) {
-    let joy = $.joyIds[i]
-    if (joy === 0) {
-      await trade(BUY_JOY_LEVEL)
-      await $.wait(1000)
-    }
+class CrazyJoy {
+  _joyIds = []
+  _coins = 0
+  _buyJoyLevel = 1
+
+  constructor(index, cookie, nickName) {
+    this._index = index
+    this._cookie = cookie
+    this._nickName = nickName
   }
-  await joyList()
-  // 开始合并
-  let maybe = calc($.joyIds)
-  for (const it of Object.keys(maybe)) {
-    let v = maybe[it]
-    if (it > 0 && it < 34) {
-      if (v.length > 1 && v.length > 2) {
-        // 只合并一次，因为合并后joy索引会变化
-        console.log(it)
-        await moveOrMerge(v[0], v[1])
-        await $.wait(1000 * 3)
+
+  async start() {
+    await this.gameState()
+    await this.doSign()
+    setInterval(__ => this.produce(), PRODUCE_SLEEP)
+    setInterval(__ => this.checkAndMerge(), MERGE_SLEEP)
+  }
+
+  async checkAndMerge() {
+    // 购买
+    await this.joyList()
+    this.msg(`joy列表 ${this._joyIds}`)
+    for (let i = 0; i < this._joyIds.length; i++) {
+      let joy = this._joyIds[i]
+      if (joy === 0) {
+        await this.trade(this._buyJoyLevel)
+        await $.wait(1000)
+      }
+    }
+    await this.joyList()
+    // 开始合并
+    let maybe = calc(this._joyIds)
+    for (const it of Object.keys(maybe)) {
+      let v = maybe[it]
+      if (it > 0 && it < 34) {
+        if (v.length > 1 && v.length > 2) {
+          // 只合并一次，因为合并后joy索引会变化
+          console.log(it)
+          await this.moveOrMerge(v[0], v[1])
+          await $.wait(1000 * 3)
+        }
       }
     }
   }
-}
 
-/**
- * 获取用户信息
- */
-function gameState() {
-  return new Promise((resolve) => {
+  /**
+   * 获取用户信息
+   */
+  gameState() {
+    return new Promise((resolve) => {
+      const body = {
+        paramData: {
+          inviter: 'DBwF_65db1jIoHqBDEMk8at9zd5YaBeE'
+        }
+      }
+      $.get(this.taskurl('crazyJoy_user_gameState', body), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            data = JSON.parse(data);
+            // console.log('ddd----ddd', data)
+            if (data.success) {
+              this.msg(`邀请码 ${data.data.userInviteCode}`)
+              this.msg(`当前joy币 ${data.data.totalCoinAmount}`)
+              this.msg(`离线收益 ${data.data.offlineCoinAmount}`)
+              this.msg(`最高级别的joy ${data.data.userTopLevelJoyId}级`)
+              this._joyIds = data.data.joyIds
+            }
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
+        }
+      })
+    })
+  }
+
+  // 获取joy列表
+  joyList() {
     const body = {
       paramData: {
         inviter: 'DBwF_65db1jIoHqBDEMk8at9zd5YaBeE'
       }
     }
-    $.get(taskurl('crazyJoy_user_gameState', body), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          // console.log('ddd----ddd', data)
-          if (data.success) {
-            console.log(`邀请码 ${data.data.userInviteCode}`)
-            console.log(`当前joy币 ${data.data.totalCoinAmount}`)
-            console.log(`离线收益 ${data.data.offlineCoinAmount}`)
-            console.log(`最高级别的joy ${data.data.userTopLevelJoyId}级`)
-            $.joyIds = data.data.joyIds
+    return new Promise((resolve) => {
+      $.get(this.taskurl('crazyJoy_user_gameState', body), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            data = JSON.parse(data);
+            // console.log('ddd----ddd', data)
+            if (data.success && data.data.joyIds) {
+              this._joyIds = data.data.joyIds
+            }
           }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
-}
-
-// 获取joy列表
-function joyList() {
-  const body = {
-    paramData: {
-      inviter: 'DBwF_65db1jIoHqBDEMk8at9zd5YaBeE'
-    }
   }
-  return new Promise((resolve) => {
-    $.get(taskurl('crazyJoy_user_gameState', body), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          // console.log('ddd----ddd', data)
-          if (data.success && data.data.joyIds) {
-            $.joyIds = data.data.joyIds
-          }
-        }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
-    })
-  })
-}
 
-// 获得奖励
-function obtainAward() {
-  return new Promise((resolve) => {
-    const body = {
-      eventType: "LUCKY_BOX_DROP",
-      eventRecordId: "547749487320494080"
-    }
-    $.get(taskurl('crazyJoy_event_obtainAward', body), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.success && data.data.coins) {
-            console.log(`模拟挂机中 获得${data.data.coins}个币，当前拥有${data.data.totalCoinAmount}`)
+  // 获得奖励
+  obtainAward() {
+    return new Promise((resolve) => {
+      const body = {
+        eventType: "LUCKY_BOX_DROP",
+        eventRecordId: "547749487320494080"
+      }
+      $.get(this.taskurl('crazyJoy_event_obtainAward', body), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            data = JSON.parse(data);
+            if (data.success && data.data.coins) {
+              this.msg(`模拟挂机中 获得${data.data.coins}个币，当前拥有${data.data.totalCoinAmount}`)
+            }
           }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
-}
+  }
 
-// 签到
-function doSign() {
-  return new Promise((resolve) => {
-    $.get(taskurl('crazyJoy_task_doSign'), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          console.log(data.message)
+  // 签到
+  doSign() {
+    return new Promise((resolve) => {
+      $.get(this.taskurl('crazyJoy_task_doSign'), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            data = JSON.parse(data);
+            this.msg(data.message)
+          }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
-}
+  }
 
 // 每日任务
-function getTaskState() {
-  const body = {"paramData": {"taskType": "DAY_TASK"}}
-  return new Promise((resolve) => {
-    $.get(taskurl('crazyJoy_task_getTaskState', body), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          // console.log('ddd----ddd', data)
-          if (data.success) {
-            console.log(data.message)
+  getTaskState() {
+    const body = {"paramData": {"taskType": "DAY_TASK"}}
+    return new Promise((resolve) => {
+      $.get(this.taskurl('crazyJoy_task_getTaskState', body), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            data = JSON.parse(data);
+            // console.log('ddd----ddd', data)
+            if (data.success) {
+              console.log(data.message)
+            }
           }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
-}
+  }
 
 // 模拟挂机获得金币
-function produce() {
-  return new Promise((resolve) => {
-    $.get(taskurl('crazyJoy_joy_produce'), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.success && data.data.coins) {
-            console.log(`模拟挂机中 获得${data.data.coins}个币，当前拥有${data.data.totalCoinAmount}`)
+  produce() {
+    return new Promise((resolve) => {
+      $.get(this.taskurl('crazyJoy_joy_produce'), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            data = JSON.parse(data);
+            if (data.success && data.data.coins) {
+              this.msg(`模拟挂机中 获得${data.data.coins}个币，当前拥有${data.data.totalCoinAmount}`)
+            }
           }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
-}
+  }
 
 // 购买joy
-function trade(joyLevel) {
-  const body = {"action": "BUY", "joyId": joyLevel, "boxId": ""}
-  return new Promise((resolve) => {
-    $.get(taskurl('crazyJoy_joy_trade', body), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.success) {
-            console.log(`购买${joyLevel}级joy成功， 花费${data.data.coins}，下次购买费用 --> ${data.data.nextBuyPrice}， 剩余joy币 --> ${data.data.totalCoins}`)
+  trade(joyLevel) {
+    const body = {"action": "BUY", "joyId": joyLevel, "boxId": ""}
+    return new Promise((resolve) => {
+      $.get(this.taskurl('crazyJoy_joy_trade', body), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
           } else {
-            console.warn(data.message)
+            data = JSON.parse(data);
+            this.msg(`购买${joyLevel}级joy成功， 花费${data.data.coins}，下次购买费用 --> ${data.data.nextBuyPrice}， 剩余joy币 --> ${data.data.totalCoins}`)
           }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
-}
+  }
 
-// 卖出
-function trade1(joyId, boxId) {
-  const body = {"action": "SELL", "joyId": joyId, "boxId": boxId}
-  return new Promise((resolve) => {
-    $.get(taskurl('crazyJoy_joy_trade', body), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          if (data.success && data.data.coins) {
-            console.log(`模拟挂机中 获得${data.data.coins}个币，当前拥有${data.data.totalCoinAmount}`)
+  // 卖出
+  trade1(joyId, boxId) {
+    const body = {"action": "SELL", "joyId": joyId, "boxId": boxId}
+    return new Promise((resolve) => {
+      $.get(this.taskurl('crazyJoy_joy_trade', body), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            data = JSON.parse(data);
+            if (data.success && data.data.coins) {
+              console.log(`模拟挂机中 获得${data.data.coins}个币，当前拥有${data.data.totalCoinAmount}`)
+            }
           }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
-}
+  }
 
 // 合并joy
-function moveOrMerge(from, to) {
-  // 等待5s再合并，不然会操作过于频繁
-  const body = {
-    "operateType": "MERGE",
-    "fromBoxIndex": from,
-    "targetBoxIndex": to
-  }
-  return new Promise((resolve) => {
-    $.get(taskurl('crazyJoy_joy_moveOrMerge', body), async (err, resp, data) => {
-      try {
-        if (err) {
-          console.log(`${JSON.stringify(err)}`)
-          console.log(`${$.name} API请求失败，请检查网路重试`)
-        } else {
-          data = JSON.parse(data);
-          console.log(data)
-          if (data.success) {
-            console.log(`合并成功 下标${from} --> ${to} = ${data.data.newJoyId}`)
+  moveOrMerge(from, to) {
+    // 等待5s再合并，不然会操作过于频繁
+    const body = {
+      "operateType": "MERGE",
+      "fromBoxIndex": from,
+      "targetBoxIndex": to
+    }
+    return new Promise((resolve) => {
+      $.get(this.taskurl('crazyJoy_joy_moveOrMerge', body), async (err, resp, data) => {
+        try {
+          if (err) {
+            console.log(`${JSON.stringify(err)}`)
+            console.log(`${$.name} API请求失败，请检查网路重试`)
+          } else {
+            data = JSON.parse(data);
+            console.log(data)
+            if (data.success) {
+              console.log(`合并成功 下标${from} --> ${to} = ${data.data.newJoyId}`)
+            }
           }
+        } catch (e) {
+          $.logErr(e, resp);
+        } finally {
+          resolve(data);
         }
-      } catch (e) {
-        $.logErr(e, resp);
-      } finally {
-        resolve(data);
-      }
+      })
     })
-  })
-}
+  }
 
-function taskurl(functionId, body = '{}') {
-  return {
-    url: `${JD_API_HOST}/?body=${encodeURIComponent(JSON.stringify(body))}&appid=crazy_joy&functionId=${functionId}&t=${Date.now()}&uts=b8bf8319bc0e120e166849cb7e957d335fe01979`,
-    headers: {
-      'Cookie': cookie,
-      'Accept': '*/*',
-      'Connection': 'keep-alive',
-      'User-Agent': 'jdpingou;iPhone;3.15.2;14.2;ae75259f6ca8378672006fc41079cd8c90c53be8;network/wifi;model/iPhone10,2;appBuild/100365;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/158;pap/JA2015_311210;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
-      'Accept-Language': 'zh-cn',
-      'Referer': 'https://crazy-joy.jd.com/',
-      'Accept-Encoding': 'gzip, deflate, br',
+  taskurl(functionId, body = '{}') {
+    return {
+      url: `${JD_API_HOST}/?body=${encodeURIComponent(JSON.stringify(body))}&appid=crazy_joy&functionId=${functionId}&t=${Date.now()}&uts=b8bf8319bc0e120e166849cb7e957d335fe01979`,
+      headers: {
+        'Cookie': this._cookie,
+        'Accept': '*/*',
+        'Connection': 'keep-alive',
+        'User-Agent': 'jdpingou;iPhone;3.15.2;14.2;ae75259f6ca8378672006fc41079cd8c90c53be8;network/wifi;model/iPhone10,2;appBuild/100365;ADID/00000000-0000-0000-0000-000000000000;supportApplePay/1;hasUPPay/0;pushNoticeIsOpen/0;hasOCPay/0;supportBestPay/0;session/158;pap/JA2015_311210;brand/apple;supportJDSHWK/1;Mozilla/5.0 (iPhone; CPU iPhone OS 14_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148',
+        'Accept-Language': 'zh-cn',
+        'Referer': 'https://crazy-joy.jd.com/',
+        'Accept-Encoding': 'gzip, deflate, br',
+      }
     }
   }
+
+  msg(message) {
+    console.log(`账号${this._index} ${this._nickName} ${message}`)
+  }
+
 }
 
 function TotalBean() {
