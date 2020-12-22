@@ -153,7 +153,7 @@ def produce_main(crazy_joy):
 
 def upgrade_main(crazy_joy):
     crazy_joy.merge_all()
-    while (datetime.datetime.now() - start_time).total_seconds() < 60 * 60 * 5:
+    while (datetime.datetime.now() - start_time).total_seconds() < 60 * 355:
         try:
             crazy_joy.upgrade()
         except:
