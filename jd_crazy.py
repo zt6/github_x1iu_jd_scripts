@@ -12,6 +12,7 @@ class CrazyJoy:
 
     def __init__(self, cookie):
         self.cookie = cookie
+        self.needs_stop = False
         self.joy_list = None
         self.top_level = None
         self.get_joy_list()
@@ -88,21 +89,14 @@ class CrazyJoy:
                     time.sleep(300)
             if not self.buy_joy(lowest_level):
                 time.sleep(300)
-            self.get_joy_list()
-            move_position = []
-            flag = False
-            for i, item in enumerate(self.joy_list):
-                if item == lowest_level:
-                    if not flag:
-                        move_position.append(i)
-                        flag = True
-                    else:
-                        move_position.append(i)
-                        break
-            logging.warn(move_position)
-            self.move_or_merge(*move_position)
+            self.merge_all()
 
         else:
+            self.sell_joy(lowest_level, self.joy_list.index(lowest_level))
+
+    def merge_all(self):
+        while True:
+            self.get_joy_list()
             seen = []
             for to, level in enumerate(self.joy_list):
                 if level == 0:
@@ -110,13 +104,12 @@ class CrazyJoy:
                 if level not in seen:
                     seen.append(level)
                 else:
-                    origin = seen.index(level)
+                    origin = self.joy_list.index(level)
+                    print(self.joy_list, f'from:{origin}   to:{to}')
                     self.move_or_merge(origin, to)
                     break
             else:
-                self.sell_joy(lowest_level, self.joy_list.index(lowest_level))
-
-
+                break
 
     def make_money(self):
         while True:
@@ -136,7 +129,7 @@ class CrazyJoy:
 
 
 def produce_main(crazy_joy):
-    while True:
+    while not crazy_joy.needs_stop:
         try:
             logging.warn(crazy_joy.produce())
         except:
@@ -147,10 +140,14 @@ if __name__ == "__main__":
     start_time = datetime.datetime.now()
     cookie = os.environ['JD_COOKIE'].split('\n')[0]
     crazy_joy = CrazyJoy(cookie)
-    Thread(target=produce_main, args=(crazy_joy,)).start()
+    produce_thread = Thread(target=produce_main, args=(crazy_joy,))
+    produce_thread.start()
+
+    crazy_joy.merge_all()
     while (datetime.datetime.now() - start_time).total_seconds() < 60*60*5:
         try:
             crazy_joy.upgrade()
         except:
             time.sleep(30)
-    exit(0)
+
+    crazy_joy.needs_stop = True
