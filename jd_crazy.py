@@ -44,16 +44,18 @@ class CrazyJoy:
         "targetBoxIndex": to
         }
         result = self.do_task(function_id, body)
-        logging.warn(result)
+        logging.warning(result)
     
     def get_joy_list(self):
         function_id = 'crazyJoy_user_gameState'
         body = {
         'paramData': {
-            'inviter': 'Lwc_OhLLBZSOt1Uc2gay6g=='
+            # 'inviter': 'Lwc_OhLLBZSOt1Uc2gay6g=='
+            'inviter': ''
             }
         }
         result = self.do_task(function_id, body)
+        # print(result)
         self.joy_list = result['data']['joyIds']
         self.top_level = result['data']['userTopLevelJoyId']
 
@@ -105,7 +107,7 @@ class CrazyJoy:
                     seen.append(level)
                 else:
                     origin = self.joy_list.index(level)
-                    print(self.joy_list, f'from:{origin}   to:{to}')
+                    logging.warning(f'joy_list:{self.joy_list} from:{origin} to:{to}')
                     self.move_or_merge(origin, to)
                     break
             else:
@@ -131,7 +133,8 @@ class CrazyJoy:
 def produce_main(crazy_joy):
     while not crazy_joy.needs_stop:
         try:
-            logging.warn(crazy_joy.produce())
+            produce_result = crazy_joy.produce()
+            logging.warning(f"获得：{produce_result['data']['coins']}  余额：{produce_result['data']['totalCoinAmount']}")
         except:
             time.sleep(5)
 
@@ -144,7 +147,7 @@ if __name__ == "__main__":
     produce_thread.start()
 
     crazy_joy.merge_all()
-    while (datetime.datetime.now() - start_time).total_seconds() < 60*60*5:
+    while (datetime.datetime.now() - start_time).total_seconds() < 60*60:
         try:
             crazy_joy.upgrade()
         except:
