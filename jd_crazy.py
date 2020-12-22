@@ -15,6 +15,7 @@ class CrazyJoy:
         self.needs_stop = False
         self.joy_list = None
         self.top_level = None
+        self.invite_code = None
         self.get_joy_list()
 
     def do_task(self, function_id, body=None, delay=5):
@@ -48,22 +49,26 @@ class CrazyJoy:
     
     def get_joy_list(self):
         function_id = 'crazyJoy_user_gameState'
+        inviter = 'Lwc_OhLLBZSOt1Uc2gay6g==' if self.invite_code != 'Lwc_OhLLBZSOt1Uc2gay6g==' else ''
         body = {
         'paramData': {
             # 'inviter': 'Lwc_OhLLBZSOt1Uc2gay6g=='
-            'inviter': ''
+            'inviter': inviter
             }
         }
         result = self.do_task(function_id, body)
-        # print(result)
+        print(result)
         self.joy_list = result['data']['joyIds']
         self.top_level = result['data']['userTopLevelJoyId']
+        self.invite_code = result['data']['userInviteCode']
 
     def sell_joy(self,joyId, boxId): # joyId:joy等级 boxId:joy位置
         body = {"action": "SELL", "joyId": joyId, "boxId": boxId}
         result = self.do_task('crazyJoy_joy_trade', body)
 
     def buy_joy(self, joy_level):
+        if joy_level < 1:
+            joy_level = 1
         body = {"action": "BUY", "joyId": joy_level, "boxId": ""}
         result = self.do_task('crazyJoy_joy_trade', body)
 
@@ -83,7 +88,11 @@ class CrazyJoy:
                 break
         lowest_level = item
 
-        if sorted_joy_list[0] == 0: # 有空位
+        if lowest_level == 0 or sorted_joy_list[-1] < 10:
+            self.merge_all(fast_upgrade=True)
+            return
+
+        if sorted_joy_list[0] == 0:  # 有空位
             if lowest_level > self.top_level - 4:
                 if self.buy_joy(self.top_level - 4):
                     return
@@ -96,13 +105,16 @@ class CrazyJoy:
         else:
             self.sell_joy(lowest_level, self.joy_list.index(lowest_level))
 
-    def merge_all(self):
+    def merge_all(self, fast_upgrade=False):
         while True:
             self.get_joy_list()
             seen = []
             for to, level in enumerate(self.joy_list):
                 if level == 0:
-                    continue
+                    if fast_upgrade:
+                        pass
+                    else:
+                        continue
                 if level not in seen:
                     seen.append(level)
                 else:
@@ -139,18 +151,31 @@ def produce_main(crazy_joy):
             time.sleep(5)
 
 
-if __name__ == "__main__":
-    start_time = datetime.datetime.now()
-    cookie = os.environ['JD_COOKIE'].split('\n')[0]
-    crazy_joy = CrazyJoy(cookie)
-    produce_thread = Thread(target=produce_main, args=(crazy_joy,))
-    produce_thread.start()
-
+def upgrade_main(crazy_joy):
     crazy_joy.merge_all()
-    while (datetime.datetime.now() - start_time).total_seconds() < 60*60:
+    while (datetime.datetime.now() - start_time).total_seconds() < 60 * 60 * 5:
         try:
             crazy_joy.upgrade()
         except:
             time.sleep(30)
-
     crazy_joy.needs_stop = True
+
+
+if __name__ == "__main__":
+    start_time = datetime.datetime.now()
+
+    cookie = os.environ['JD_COOKIE']
+    separators = ['\n', '&', '\\n']
+    for separator in separators:
+        if separator in cookie:
+            logging.warning(f'你的cookie区隔符是{separator}')
+            cookies = cookie.split(separator)
+            break
+    else:
+        cookies = [cookie]
+    logging.warning(f'\n====================共有{len(cookies)}个京东账号Cookie=========\n')
+
+    for cookie in cookies:
+        crazy_joy = CrazyJoy(cookie)
+        Thread(target=produce_main, args=(crazy_joy,)).start()
+        Thread(target=upgrade_main, args=(crazy_joy,)).start()
