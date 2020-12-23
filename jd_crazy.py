@@ -1,5 +1,6 @@
 import requests
 import time
+import string
 import os
 import datetime
 import logging
@@ -24,8 +25,10 @@ class CrazyJoy:
             body = dict()
 
         time.sleep(delay)
+        uts = ''.join(random.choices(string.ascii_lowercase+string.digits, k=40))
+        # print(uts)
 
-        url = f'{CrazyJoy.JD_API_HOST}/?body={str(body)}&appid=crazy_joy&functionId={function_id}&t={int(time.time()*1000)}&uts=b8bf8319bc0e120e166849cb7e957d335fe01979'
+        url = f'{CrazyJoy.JD_API_HOST}/?body={str(body)}&appid=crazy_joy&functionId={function_id}&t={int(time.time()*1000)}&uts={uts}'
         headers = {
         'Cookie': self.cookie,
         'Accept': '*/*',
@@ -59,7 +62,7 @@ class CrazyJoy:
             }
         }
         result = self.do_task(function_id, body)
-        print(result)
+        # print(result)
         self.joy_list = result['data']['joyIds']
         self.top_level = result['data']['userTopLevelJoyId']
 
