@@ -34,7 +34,7 @@ jobs:
         run: |
           node jd_crazy_joy.js
           node jd_crazy_joy_coin.js &
-          sleep 355m
+          sleep 330m
           ps -ef | grep node | grep -v grep | cut -c 9-15 | xargs kill -s 9
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
