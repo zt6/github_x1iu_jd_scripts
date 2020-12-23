@@ -38,26 +38,26 @@ jobs:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
-  test:
-    runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == github.event.sender.id
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set up Python 3.7
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-      - name: '运行领京豆'
-        run: |
-          pip3 install requests
-          python3 jd_crazy.py
-        env:
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          JD_DEBUG: ${{ secrets.JD_DEBUG }}
-          PUSH_KEY: ${{ secrets.PUSH_KEY }}
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PAT }}
-          event-type: jd_crazy
+  # test:
+  #   runs-on: ubuntu-latest
+  #   if: github.event.repository.owner.id == github.event.sender.id
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v2
+  #     - name: Set up Python 3.7
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: 3.7
+  #     - name: '运行领京豆'
+  #       run: |
+  #         pip3 install requests
+  #         python3 jd_crazy.py
+  #       env:
+  #         JD_COOKIE: ${{ secrets.JD_COOKIE }}
+  #         JD_DEBUG: ${{ secrets.JD_DEBUG }}
+  #         PUSH_KEY: ${{ secrets.PUSH_KEY }}
+  #     - name: Repository Dispatch
+  #       uses: peter-evans/repository-dispatch@v1
+  #       with:
+  #         token: ${{ secrets.PAT }}
+  #         event-type: jd_crazy
