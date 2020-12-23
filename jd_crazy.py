@@ -16,6 +16,7 @@ class CrazyJoy:
         self.joy_list = None
         self.top_level = None
         self.invite_code = None
+        self.get_user_info()
         self.get_joy_list()
 
     def do_task(self, function_id, body=None, delay=5):
@@ -49,7 +50,8 @@ class CrazyJoy:
     
     def get_joy_list(self):
         function_id = 'crazyJoy_user_gameState'
-        inviter = 'Lwc_OhLLBZSOt1Uc2gay6g==' if self.invite_code != 'Lwc_OhLLBZSOt1Uc2gay6g==' else ''
+        # inviter = 'Lwc_OhLLBZSOt1Uc2gay6g==' if self.invite_code != 'Lwc_OhLLBZSOt1Uc2gay6g==' else ''
+        inviter = '' if self.cookie.endswith('1043;') else 'Lwc_OhLLBZSOt1Uc2gay6g=='
         body = {
         'paramData': {
             # 'inviter': 'Lwc_OhLLBZSOt1Uc2gay6g=='
@@ -60,7 +62,19 @@ class CrazyJoy:
         print(result)
         self.joy_list = result['data']['joyIds']
         self.top_level = result['data']['userTopLevelJoyId']
-        self.invite_code = result['data']['userInviteCode']
+
+    def get_user_info(self):
+        inviter = '' if self.cookie.endswith('1043;') else 'Lwc_OhLLBZSOt1Uc2gay6g=='
+        # print(self.cookie, self.cookie.endswith('1043;'))
+        body = {
+            'paramData': {
+                'inviter': inviter
+            }
+        }
+        result = self.do_task('crazyJoy_user_gameState', body)
+        print(result)
+        if result['success']:
+            self.invite_code = result['data']['userInviteCode']
 
     def sell_joy(self,joyId, boxId): # joyId:joy等级 boxId:joy位置
         body = {"action": "SELL", "joyId": joyId, "boxId": boxId}
