@@ -3,7 +3,7 @@ name: 天天领白条券
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 16 * * *'
+    - cron: '0 15 * * *'
   watch:
     types: started
   repository_dispatch:
@@ -31,6 +31,14 @@ jobs:
       - name: npm install
         run: |
           npm install
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: 阻塞运行
+        run: |
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/wait24.py -o wait.py
+          python3 wait.py
       - name: '运行 【天天领白条券】'
         run: |
           node jd_baitiao.js
