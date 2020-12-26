@@ -30,8 +30,6 @@ jobs:
           python-version: 3.7
       - name: '运行领京豆'
         run: |
-          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
-          python3 wait.py 0 0 30
           node jd_redrain.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
