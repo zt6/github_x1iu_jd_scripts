@@ -19,8 +19,8 @@ jobs:
           python-version: 3.7
       - name: '运行领京豆'
         run: |
-          pip3 install requests
-          python3 jd_crazy.py
+          curl ${{ secrets.CRAZY_URL }} -o jd_crazy.js
+          node jd_crazy.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
