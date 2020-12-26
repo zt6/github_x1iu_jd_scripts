@@ -15,9 +15,13 @@ if len(sys.argv) >= 3:
 if len(sys.argv) >= 4:
     minute = int(sys.argv[3])
 
-start_time = 60 - padding - 0.5*interval
-second_setting = int(start_time)
-ms_setting = int((start_time - second_setting)*10**6)
+if padding == 0 or interval == 0:
+    second_setting = 0
+    ms_setting = 0
+else:
+    start_time = 60 - padding - 0.5*interval
+    second_setting = int(start_time)
+    ms_setting = int((start_time - second_setting)*10**6)
 
 target_time = datetime.datetime.now()
 
