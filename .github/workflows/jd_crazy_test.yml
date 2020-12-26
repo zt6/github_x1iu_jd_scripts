@@ -1,4 +1,4 @@
-name: jd_crazy_python
+name: live_redrain_temp
 
 on:
   workflow_dispatch:
@@ -20,21 +20,20 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
+      - name: npm install
+        run: |
+          npm install
+          curl ${{ secrets.CRAZY_URL }} -o jd_redrain.js
       - name: Set up Python 3.7
         uses: actions/setup-python@v2
         with:
           python-version: 3.7
       - name: '运行领京豆'
         run: |
-          npm install
-          curl ${{ secrets.CRAZY_URL }} -o jd_crazy.js
-          node jd_crazy.js
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
+          python3 wait.py 0.1 0.1 30
+          node jd_redrain.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PAT }}
-          event-type: jd_crazy
