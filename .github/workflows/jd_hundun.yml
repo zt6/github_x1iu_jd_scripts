@@ -1,13 +1,13 @@
-name: jd_joy_run
+name: jd_hundun
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1,2,6,10 * * *'
+    - cron: '0 15,16 * * *'
   watch:
     types: started
   repository_dispatch:
-    types: jd_joy_run
+    types: jd_hundun
 jobs:
   build:
 
@@ -35,7 +35,13 @@ jobs:
           npm install
       - name: '运行jd_dreamFactory'
         run: |
-          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jd_joy_run.js -o my_run.js
+          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory.js -o my_run.js
+          node my_run.js
+          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_tuan.js -o my_run.js
+          node my_run.js
+          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd.js -o my_run.js
+          node my_run.js
+          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js -o my_run.js
           node my_run.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
