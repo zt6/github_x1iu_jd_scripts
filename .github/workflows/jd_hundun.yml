@@ -33,13 +33,9 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行jd_dreamFactory'
+      - name: '运行hundun脚本'
         run: |
           curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jx_factory.js -o my_run.js
-          node my_run.js
-          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd_tuan.js -o my_run.js
-          node my_run.js
-          curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd.js -o my_run.js
           node my_run.js
           curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jdzz.js -o my_run.js
           node my_run.js
