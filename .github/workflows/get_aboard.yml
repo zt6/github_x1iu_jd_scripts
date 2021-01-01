@@ -3,7 +3,7 @@ name: get_aboard
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 18 9,19,27,28,29,30 * *'
+    - cron: '0 18,20 9,19,27,28,29,30 * *'
 
 jobs:
   deploy:
@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: 提交互助码
       run: |
-        for ((a=1; a <= 15; a++))
+        for ((a=1; a <= 4; a++))
         do
             curl http://api.turinglabs.net/api/v1/jd/bean/create/73qwpzbx4mgajmucs65vsdvscaakk7n7w35ivjy/
             curl http://api.turinglabs.net/api/v1/jd/farm/create/e2e5e1be41dd42a3b5f1351f5ede6842/
