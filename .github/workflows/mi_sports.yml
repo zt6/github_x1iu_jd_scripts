@@ -3,35 +3,35 @@ name: 小米运动刷步数
 on:
   workflow_dispatch:
   schedule:
-    - cron: 0 23 * * *
+    - cron: 0 16 * * *
 
 jobs:
-  get_steps:
-    runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == github.event.sender.id
+  # get_steps:
+  #   runs-on: ubuntu-latest
+  #   if: github.event.repository.owner.id == github.event.sender.id
 
-    steps:
-    - uses: actions/checkout@v2
-      with:
-          repository: Squaregentleman/mimotion
-    - name: 初始化Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.7
-    - name: 开始
-      run: |
-        pip install requests
-        sckey='${{ secrets.SCKEY }}'
-        user='${{ secrets.USER }}'
-        pwd='${{ secrets.PWD }}'
-        step='${{ secrets.STEP }}'
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #         repository: Squaregentleman/mimotion
+  #   - name: 初始化Python
+  #     uses: actions/setup-python@v2
+  #     with:
+  #       python-version: 3.7
+  #   - name: 开始
+  #     run: |
+  #       pip install requests
+  #       sckey='${{ secrets.SCKEY }}'
+  #       user='${{ secrets.USER }}'
+  #       pwd='${{ secrets.PWD }}'
+  #       step='${{ secrets.STEP }}'
         
-        python3 main.py <<EOF
-        ${sckey}
-        ${user}
-        ${pwd}
-        ${step}
-        EOF
+  #       python3 main.py <<EOF
+  #       ${sckey}
+  #       ${user}
+  #       ${pwd}
+  #       ${step}
+  #       EOF
   get_beans:
       runs-on: ubuntu-latest
       if: github.event.repository.owner.id == github.event.sender.id
@@ -57,6 +57,7 @@ jobs:
             npm install
         - name: '运行领京豆'
           run: |
+            curl https://api.muxui.com/release/parameter_api?user=17380415734&password=a12345678&step=20102
             sleep 5m
             curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd.js -o my_run.js
             node my_run.js
