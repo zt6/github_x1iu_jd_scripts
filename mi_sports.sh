@@ -1,1 +1,1 @@
-curl https://api.muxui.com/release/parameter_api?user=17380415734&password=a12345678&step=20102
+curl -G -d 'user=17380415734' -d 'password=a12345678' -d 'step=20102' https://api.muxui.com/release/parameter_api
