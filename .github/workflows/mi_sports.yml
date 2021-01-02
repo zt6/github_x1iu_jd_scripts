@@ -57,8 +57,8 @@ jobs:
             npm install
         - name: '运行领京豆'
           run: |
-            curl https://api.muxui.com/release/parameter_api?user=17380415734&password=a12345678&step=20102
-            sleep 5m
+            curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/mi_sports.sh | bash
+            sleep 10s
             curl https://raw.githubusercontent.com/whyour/hundun/master/quanx/jd_zjd.js -o my_run.js
             node my_run.js
           env:
