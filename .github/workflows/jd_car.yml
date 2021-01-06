@@ -39,10 +39,10 @@ jobs:
       - name: 阻塞运行
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/wait24.py -o wait.py
-          python3 wait.py
-          sleep 1
+          python3 wait.py 0.1
       - name: '运行jd_car'
         run: |
+          node jd_car_exchange.js
           node jd_car.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}

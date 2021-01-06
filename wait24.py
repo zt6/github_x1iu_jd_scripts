@@ -5,7 +5,7 @@ import sys
 
 sleep_gap = 3
 if len(sys.argv) == 2:
-    sleep_gap = int(sys.argv[1])
+    sleep_gap = float(sys.argv[1])
 
 target_hour = datetime.datetime.now().hour + 1
 if target_hour == 24:
