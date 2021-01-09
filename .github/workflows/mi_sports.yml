@@ -3,7 +3,7 @@ name: 小米运动刷步数
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 22 * * *'
+    - cron: '58 23 * * *'
 
 jobs:
   # get_steps:
