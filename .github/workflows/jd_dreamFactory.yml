@@ -47,16 +47,16 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
-      - name: '运行偷电力'
-        run: |
-          sleep 30m
-          sleep $(($RANDOM%120))
-          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/dream.js -o dream.js
-          node dream.js
-        env:
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
-          JD_DEBUG: ${{ secrets.JD_DEBUG }}
-          PUSH_KEY: ${{ secrets.PUSH_KEY }}
+      # - name: '运行偷电力'
+      #   run: |
+      #     sleep 30m
+      #     sleep $(($RANDOM%120))
+      #     curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/dream.js -o dream.js
+      #     node dream.js
+      #   env:
+      #     JD_COOKIE: ${{ secrets.JD_COOKIE }}
+      #     JD_DEBUG: ${{ secrets.JD_DEBUG }}
+      #     PUSH_KEY: ${{ secrets.PUSH_KEY }}
   dispatch:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
