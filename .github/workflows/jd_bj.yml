@@ -30,6 +30,8 @@ jobs:
           npm install
       - name: '运行'
         run: |
+          echo $NODE_ENV
+          curl https://raw.githubusercontent.com/LXK9301/jd_scripts/master/package.json -o package.json
           curl https://gitee.com/lxk0301/jd_scripts/raw/8c45d350980e69c2294eda4c48985f0b799d2558/jdCookie.js -o jdCookie.js
           node jd_bj.js
         env:
