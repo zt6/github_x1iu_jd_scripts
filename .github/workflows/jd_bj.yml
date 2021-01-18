@@ -31,6 +31,7 @@ jobs:
           npm install
       - name: '运行'
         run: |
+          curl https://raw.githubusercontent.com/x1iu/scripts_jd/master/USER_AGENTS.js -o USER_AGENTS.j
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jdCookie.js -o jdCookie.js
           node jd_bj.js
         env:
