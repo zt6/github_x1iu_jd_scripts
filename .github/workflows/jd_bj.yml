@@ -31,8 +31,7 @@ jobs:
           npm install
       - name: '运行'
         run: |
-          export
-          curl https://gitee.com/lxk0301/jd_scripts/raw/8c45d350980e69c2294eda4c48985f0b799d2558/jdCookie.js -o jdCookie.js
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jdCookie.js -o jdCookie.js
           node jd_bj.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
