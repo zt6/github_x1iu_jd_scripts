@@ -3,7 +3,7 @@ name: 超级直播间红包雨
 on:
   workflow_dispatch:
   schedule:
-    - cron: '30 11,12,13,14 19 1 *'
+    - cron: '0 12,13,14,15 19 1 *'
 jobs:
   build:
     runs-on: ubuntu-latest
