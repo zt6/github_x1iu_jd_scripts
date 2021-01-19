@@ -41,6 +41,10 @@ jobs:
           python3 wait.py 0.1 0.1 29
           curl https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain.js -o jd_redrain.js
           node jd_redrain.js
+          curl https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain.js -o jd_redrain.js
+          node jd_redrain.js
+          curl https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain.js -o jd_redrain.js
+          node jd_redrain.js
           sleep 1m
           curl https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain.js -o jd_redrain.js
           node jd_redrain.js
