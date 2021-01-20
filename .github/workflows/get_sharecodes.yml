@@ -10,7 +10,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          repository: x1iu/scripts_jd
+          repository: x1iu/bbaase
           ref: 'master'
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
