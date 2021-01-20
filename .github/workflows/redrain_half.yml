@@ -38,8 +38,8 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
           python3 wait.py 0.1 0.1 29
-          curl https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain_half.js -o jd_live_redrain_half.js
           node jd_live_redrain_half.js
+# curl https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain_half.js -o jd_live_redrain_half.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
