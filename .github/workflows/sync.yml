@@ -31,3 +31,4 @@ jobs:
         repository: x1iu/bbaase
         github_token: ${{ secrets.PAT }}
         branch: 'main'
+        force: true
