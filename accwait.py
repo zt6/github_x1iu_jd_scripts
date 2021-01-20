@@ -33,7 +33,7 @@ else:
 i=0
 while datetime.datetime.now() < target_time:
     i += 1
-    if i % 30 == 0:
+    if i % 300 == 0:
         logging.warn(f'{datetime.datetime.now()}未到{target_time}点')
     time.sleep(0.01)
 
