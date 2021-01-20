@@ -5,8 +5,8 @@ name: jd_joy_feedPets
 
 on:
   workflow_dispatch:
-  # schedule:
-  #   - cron: '*/20 */1 * * *'
+  schedule:
+    - cron: '58,28 * * * *'
   watch:
     types: [started]
   repository_dispatch:
@@ -52,16 +52,16 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
-  dispatch:
-    runs-on: ubuntu-latest
-    if: github.event.repository.owner.id == github.event.sender.id
-    steps:
-      - name: 'wait'
-        run: |
-          sleep 3h
-          sleep $(($RANDOM%240))
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.PAT }}
-          event-type: joy_feedPets
+  # dispatch:
+  #   runs-on: ubuntu-latest
+  #   if: github.event.repository.owner.id == github.event.sender.id
+  #   steps:
+  #     - name: 'wait'
+  #       run: |
+  #         sleep 3h
+  #         sleep $(($RANDOM%240))
+  #     - name: Repository Dispatch
+  #       uses: peter-evans/repository-dispatch@v1
+  #       with:
+  #         token: ${{ secrets.PAT }}
+  #         event-type: joy_feedPets
