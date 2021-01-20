@@ -25,7 +25,10 @@ else:
 
 target_time = datetime.datetime.now()
 
-target_time = target_time.replace(minute=minute, second=second_setting, microsecond=ms_setting)
+if target_time.minute > minute:
+    target_time = target_time.replace(hour=target_time.hour+1,minute=minute, second=second_setting, microsecond=ms_setting)
+else:
+    target_time = target_time.replace(minute=minute, second=second_setting, microsecond=ms_setting)
 
 i=0
 while datetime.datetime.now() < target_time:
