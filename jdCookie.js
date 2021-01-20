@@ -1,6 +1,4 @@
-for(var i in process.env){
-    if (JSON.stringify(i).indexOf('GITHUB')>-1) delete process.env[i]
-}
+for(var i in process.env){if (JSON.stringify(i).indexOf('GITHUB')>-1) delete process.env[i]}
 let CookieJDs = [
     '',//账号一ck,例:pt_key=XXX;pt_pin=XXX;
     '',//账号二ck,例:pt_key=XXX;pt_pin=XXX;如有更多,依次类推
