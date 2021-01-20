@@ -49,6 +49,8 @@ jobs:
         done
         curl https://raw.githubusercontent.com/x1iu/scripts_jd/master/USER_AGENTS.js -o USER_AGENTS.js
         curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jdCookie.js -o jdCookie.js
+        git add USER_AGENTS.js
+        git add jdCookie.js
     - name: Commit files
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
