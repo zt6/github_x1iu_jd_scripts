@@ -47,6 +47,8 @@ jobs:
         do
             sed -i "1i\for(var i in process.env){if (JSON.stringify(i).indexOf('GITHUB')>-1) delete process.env[i]}" "$Jsfile"
         done
+        curl https://raw.githubusercontent.com/x1iu/scripts_jd/master/USER_AGENTS.js -o USER_AGENTS.js
+        curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jdCookie.js -o jdCookie.js
     - name: Commit files
       run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
