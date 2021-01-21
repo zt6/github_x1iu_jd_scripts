@@ -33,7 +33,9 @@ jobs:
           npm install
       - name: '运行'
         run: |
+          node jd_nian_ar.js
           node jd_nian.js
+          node jd_nian_ar.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
