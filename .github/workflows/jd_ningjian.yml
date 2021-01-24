@@ -37,6 +37,8 @@ jobs:
           node jd_dreamFactory.js
           node jd_dreamFactory.js
           node jd_dreamFactory.js
+          node jd_dreamFactory.js
+          node jd_dreamFactory.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
