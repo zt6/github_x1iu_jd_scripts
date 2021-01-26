@@ -3,7 +3,7 @@ name: 京东手机年终奖2-8
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 1 * * *'
+    - cron: '0 1,15 * * *'
 jobs:
   build:
     runs-on: ubuntu-latest
