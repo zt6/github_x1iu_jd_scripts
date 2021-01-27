@@ -32,34 +32,34 @@ jobs:
         github_token: ${{ secrets.PAT }}
         branch: 'main'
         force: true
-  syncloon:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        repository: shylocks/Loon
-        ref: 'main'
-        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
-        fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
-    - name: Create local changes
-      run: |
-        for Jsfile in $(ls| grep "\.js$")
-        do
-            sed -i "1i\for(var i in process.env){if (JSON.stringify(i).indexOf('GITHUB')>-1) delete process.env[i]}" "$Jsfile"
-        done
-        curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/USER_AGENTS.js -o USER_AGENTS.js
-        curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jdCookie.js -o jdCookie.js
-        git add USER_AGENTS.js
-        git add jdCookie.js
-    - name: Commit files
-      run: |
-        git config --local user.email "github-actions[bot]@users.noreply.github.com"
-        git config --local user.name "github-actions[bot]"
-        git commit -m "Add changes" -a
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
-        repository: x1iu/looooon
-        github_token: ${{ secrets.PAT }}
-        branch: 'main'
-        force: true
+  # syncloon:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v2
+  #     with:
+  #       repository: shylocks/Loon
+  #       ref: 'main'
+  #       persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
+  #       fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
+  #   - name: Create local changes
+  #     run: |
+  #       for Jsfile in $(ls| grep "\.js$")
+  #       do
+  #           sed -i "1i\for(var i in process.env){if (JSON.stringify(i).indexOf('GITHUB')>-1) delete process.env[i]}" "$Jsfile"
+  #       done
+  #       curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/USER_AGENTS.js -o USER_AGENTS.js
+  #       curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jdCookie.js -o jdCookie.js
+  #       git add USER_AGENTS.js
+  #       git add jdCookie.js
+  #   - name: Commit files
+  #     run: |
+  #       git config --local user.email "github-actions[bot]@users.noreply.github.com"
+  #       git config --local user.name "github-actions[bot]"
+  #       git commit -m "Add changes" -a
+  #   - name: Push changes
+  #     uses: ad-m/github-push-action@master
+  #     with:
+  #       repository: x1iu/looooon
+  #       github_token: ${{ secrets.PAT }}
+  #       branch: 'main'
+  #       force: true
