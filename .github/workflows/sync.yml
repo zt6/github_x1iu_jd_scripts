@@ -22,11 +22,11 @@ jobs:
         do
             sed -i "1i\for(var i in process.env){if (JSON.stringify(i).indexOf('GITHUB')>-1) delete process.env[i]}" "$Jsfile"
         done
-    - name: Commit files
-      run: |
         git config --local user.email "github-actions[bot]@users.noreply.github.com"
         git config --local user.name "github-actions[bot]"
         git commit -m "Add changes" -a
+    # - name: Commit files
+    #   run: |
     - name: Push changes
       uses: ad-m/github-push-action@master
       with:
