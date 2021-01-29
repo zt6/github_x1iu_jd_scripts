@@ -1,7 +1,7 @@
 name: sync
 on:
-  schedule:
-  - cron:  "29,55 * * * *"
+  # schedule:
+  # - cron:  "29,55 * * * *"
   workflow_dispatch:
   repository_dispatch:
     types: sync
