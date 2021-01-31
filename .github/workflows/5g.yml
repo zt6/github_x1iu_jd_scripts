@@ -42,12 +42,12 @@ jobs:
           python3 wait.py 0.01 0.01
       - name: '运行5g'
         run: |
-          node jd_5g.js
+          node jd_5g.js &
+          node jd_818.js
+          sleep 10m
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
-          JD_JOY_REWARD_NOTIFY: ${{ secrets.JD_JOY_REWARD_NOTIFY }}
-          JD_JOY_REWARD_NAME: ${{ secrets.JD_JOY_REWARD_NAME }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
           BARK_PUSH: ${{ secrets.BARK_PUSH }}
           BARK_SOUND: ${{ secrets.BARK_SOUND }}
