@@ -31,9 +31,10 @@ jobs:
           npm install
       - name: '运行领零件'
         run: |
-          for ((a=1; a <= 10; a++))
+          for ((a=1; a <= 13; a++))
           do
               node jd_dreamFactory.js
+              sleep 13m
           done
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
