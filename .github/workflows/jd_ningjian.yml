@@ -31,14 +31,10 @@ jobs:
           npm install
       - name: '运行领零件'
         run: |
-          node jd_dreamFactory.js
-          node jd_dreamFactory.js
-          node jd_dreamFactory.js
-          node jd_dreamFactory.js
-          node jd_dreamFactory.js
-          node jd_dreamFactory.js
-          node jd_dreamFactory.js
-          node jd_dreamFactory.js
+          for ((a=1; a <= 10; a++))
+          do
+              node jd_dreamFactory.js
+          done
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
