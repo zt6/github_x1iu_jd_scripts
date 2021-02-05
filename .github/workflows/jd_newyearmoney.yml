@@ -3,7 +3,7 @@ name: 京东压岁钱
 on:
   workflow_dispatch:
   schedule:
-    - cron: '59 0,4 * * *'
+    - cron: '59 21,4 * * *'
 jobs:
   build:
 
@@ -32,6 +32,11 @@ jobs:
           npm install
       - name: '运行京东压岁钱'
         run: |
+          for ((a=1; a<=10; a++))
+          do
+            node jd_newYearMoney.js
+            sleep 10m
+          done
           node jd_newYearMoney.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}

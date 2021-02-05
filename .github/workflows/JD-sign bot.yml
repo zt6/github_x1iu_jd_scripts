@@ -15,6 +15,7 @@ jobs:
               uses: actions/checkout@v2
               with:
                 repository: ruicky/jd_sign_bot
+                ref: 'master'
             - name: Use Node.js
               uses: actions/setup-node@v1
               with:
