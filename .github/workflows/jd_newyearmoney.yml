@@ -3,7 +3,7 @@ name: 京东压岁钱
 on:
   workflow_dispatch:
   schedule:
-    - cron: '59 21,4 * * *'
+    - cron: '59 22,4 * * *'
 jobs:
   build:
 
