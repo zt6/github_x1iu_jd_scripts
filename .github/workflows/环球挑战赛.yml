@@ -32,7 +32,7 @@ jobs:
           npm install
       - name: '运行'
         run: |
-          jd_global.js
+          node jd_global.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
