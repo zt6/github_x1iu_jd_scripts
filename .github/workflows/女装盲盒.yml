@@ -3,7 +3,7 @@ name: 女装盲盒2-25
 on:
   workflow_dispatch:
   schedule:
-    - cron: '18 4 19-25 2 *'
+    - cron: '39 4 * * *'
 jobs:
   build:
 
