@@ -1,4 +1,4 @@
-name: 口袋书店
+name: 口袋书店_美丽研究院
 
 on:
   workflow_dispatch:
@@ -33,6 +33,7 @@ jobs:
           npm install
       - name: '运行口袋书店'
         run: |
+          node jd_beauty.js
           node jd_bookshop.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
