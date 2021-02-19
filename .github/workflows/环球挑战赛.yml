@@ -33,8 +33,6 @@ jobs:
       - name: '运行'
         run: |
           node jd_global.js
-          node jd_global_mh.js
-# 魔盒2-15
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
