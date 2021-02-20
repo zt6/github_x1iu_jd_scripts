@@ -6,7 +6,7 @@ name: 领零件
 on:
   workflow_dispatch:
   schedule:
-    - cron: '58 15 * * *'
+    - cron: '59 15 * * *'
 jobs:
   build:
 
@@ -31,11 +31,7 @@ jobs:
           npm install
       - name: '运行领零件'
         run: |
-          for ((a=1; a <= 15; a++))
-          do
-              node jd_dreamFactory.js
-              sleep 9m
-          done
+          node jd_dreamFactory.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
