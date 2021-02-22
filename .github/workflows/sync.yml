@@ -1,7 +1,7 @@
 name: sync
 on:
-  # schedule:
-  # - cron:  "29,55 * * * *"
+  schedule:
+  - cron:  "29,55 * * * *"
   workflow_dispatch:
   repository_dispatch:
     types: sync
@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
       with:
-        repository: x1iu/scripts_jd
+        repository: RikudouPatrickstar/jd_scripts
         ref: 'master'
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal token
         fetch-depth: 0 # otherwise, you will failed to push refs to dest repo
@@ -37,7 +37,7 @@ jobs:
       uses: Mattraks/delete-workflow-runs@main
       with:
         token: ${{ github.token }}
-        retain_days: 1
+        retain_days: 30
         keep_minimum_runs: 3
   # syncloon:
   #   runs-on: ubuntu-latest
