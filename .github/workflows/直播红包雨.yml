@@ -37,10 +37,10 @@ jobs:
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
           python3 wait.py 0.1 0.1 29
-          curl https://raw.githubusercontent.com/shylocks/Loon/main/live_redrain.js -o live_redrain.js
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/live_redrain.js -o live_redrain.js
           node live_redrain.js
           sleep 1m
-          curl https://raw.githubusercontent.com/shylocks/Loon/main/live_redrain.js -o live_redrain.js
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/live_redrain.js -o live_redrain.js
           node live_redrain.js
 # curl https://raw.githubusercontent.com/shylocks/Loon/main/jd_live_redrain_half.js -o jd_live_redrain_half.js
         env:
