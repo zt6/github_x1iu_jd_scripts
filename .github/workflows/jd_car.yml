@@ -43,12 +43,17 @@ jobs:
           python3 wait.py 5
       - name: '运行jd_car'
         run: |
-          for ((a=1; a <= 8; a++))
+          for ((a=1; a <= 10; a++))
           do
               node jd_car_exchange.js &
               sleep 0.5
           done
-          sleep 20
+          for ((a=1; a <= 120; a++))
+          do
+              node jd_car_exchange.js &
+              sleep 1.03
+          done
+          sleep 30
           node jd_car.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
