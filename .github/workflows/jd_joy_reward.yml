@@ -41,7 +41,7 @@ jobs:
       - name: 阻塞运行
         run: |
           curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
-          python3 wait.py 1 0.1
+          python3 wait.py 2.3 0.1
 # curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/jd_joy_reward.js -o jd_joy_reward.js
       - name: '运行 【宠汪汪积分兑换京豆】'
         run: |
