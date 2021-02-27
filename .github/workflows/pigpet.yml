@@ -1,4 +1,4 @@
-name: pigpet
+name: 京东小猪
 
 on:
   workflow_dispatch:

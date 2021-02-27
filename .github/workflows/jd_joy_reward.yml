@@ -1,4 +1,4 @@
-name: jd_joy_reward
+name: 宠汪汪兑换
 
 on:
   workflow_dispatch:

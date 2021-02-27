@@ -1,4 +1,4 @@
-name: jd_cash
+name: 领现金
 
 on:
   workflow_dispatch:
