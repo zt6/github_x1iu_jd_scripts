@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
+          repository: x1iu/shuye
           persist-credentials: false
 
       - name: 开始🔄自动同步🔄
