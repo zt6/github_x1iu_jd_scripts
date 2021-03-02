@@ -1,9 +1,18 @@
 for(var i in process.env){if (JSON.stringify(i).indexOf('GITHUB')>-1) delete process.env[i]}
 /*
-超级直播间红包雨 仅2月23日
-cron 30,31 20-23/1 23 2 *
+30,31 20-23/1 2,5 3 * jd_live_redrain.js
 */
 const $ = new Env('超级直播间红包雨');
+let bodyList = {
+  '2': {
+    url: 'https://api.m.jd.com/client.action?functionId=liveActivityV8420&uuid=8888888&client=apple&clientVersion=9.4.1&st=1614332001091&sign=92c7fc6ad1cc78cb344bf32de2fa7474&sv=110',
+    body: 'body=%7B%22liveId%22%3A%223570050%22%7D'
+  },
+  '5': {
+    url: 'https://api.m.jd.com/client.action?functionId=liveActivityV8420&uuid=8888888&client=apple&clientVersion=9.4.1&st=1614331999027&sign=a33166ef832849af9c298801a5bad24a&sv=112',
+    body: 'body=%7B%22liveId%22%3A%223554417%22%7D'
+  }
+}
 let ids = {
 
 }
@@ -20,13 +29,7 @@ if ($.isNode()) {
   };
   if(JSON.stringify(process.env).indexOf('GITHUB')>-1) process.exit(0)
 }else {
-  let cookiesData = $.getdata('CookiesJD') || "[]";
-  cookiesData = jsonParse(cookiesData);
-  cookiesArr = cookiesData.map(item => item.cookie);
-  cookiesArr.reverse();
-  cookiesArr.push(...[$.getdata('CookieJD2'), $.getdata('CookieJD')]);
-  cookiesArr.reverse();
-  cookiesArr = cookiesArr.filter(item => item !== "" && item !== null && item !== undefined);
+  cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 const JD_API_HOST = 'https://api.m.jd.com/api';
 !(async () => {
@@ -92,9 +95,14 @@ function showMsg() {
 }
 
 function getRedRain() {
-  let url = 'https://api.m.jd.com/client.action?functionId=liveActivityV842&body=%7B%22liveId%22%3A%223537817%22%7D&uuid=8888888&client=apple&clientVersion=9.4.1&st=1613812715040&sign=531924b533dcff447306cfe5b0377660&sv=111'
+  let body
+  if(bodyList.hasOwnProperty(new Date().getDate())) {
+    body = bodyList[new Date().getDate()]
+  }else{
+    return
+  }
   return new Promise(resolve => {
-    $.post(taskGetUrl(url, `{"liveId":"3537817"}`), (err, resp, data) => {
+    $.post(taskGetUrl(body.url, body.body), (err, resp, data) => {
       try {
         if (err) {
           console.log(`${JSON.stringify(err)}`)
@@ -103,6 +111,8 @@ function getRedRain() {
           if (safeGet(data)) {
             data = JSON.parse(data);
             if (data.data && data.data.iconArea) {
+              console.log(data.data.iconArea.filter(vo=>vo['type']==='anchor_darw_lottery').length &&
+                data.data.iconArea.filter(vo=>vo['type']==='anchor_darw_lottery')[0].data.lotteryId)
               let act = data.data.iconArea.filter(vo=>vo['type']==="platform_red_packege_rain")[0]
               if (act) {
                 let url = act.data.activityUrl
