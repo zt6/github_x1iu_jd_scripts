@@ -1,12 +1,11 @@
-name: 小鸽有礼2
+name: 尚学季
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '58 23 * * *'
+    - cron: '10 15 * * *'
 jobs:
   build:
-
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
@@ -29,12 +28,20 @@ jobs:
           key: ${{ runner.os }}-${{ env.cache-name }}-${{ hashFiles('package-lock.json') }} # 使用 package-lock.json 的 Hash 作为缓存的 key。也可以使用 package.json 代替
       - name: npm install
         run: |
-          npm install    
+          npm install
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.7
+      - name: 阻塞运行
+        run: |
+          curl https://raw.githubusercontent.com/x1iu/jd_scripts/master/accwait.py -o wait.py
+          python3 wait.py 0.1 0.1
       - name: '运行'
         run: |
           node jd_xgyl.js
         env:
-          JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
           BARK_PUSH: ${{ secrets.BARK_PUSH }}
@@ -44,4 +51,3 @@ jobs:
           DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN }}
           DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET }}
           IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY }}
-          JD_IMMORTAL_LATLON: '{"lat":33.1, "lng":118.2}'
