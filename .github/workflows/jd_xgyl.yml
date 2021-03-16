@@ -39,7 +39,7 @@ jobs:
           python3 wait.py 0.1 0.1
       - name: '运行'
         run: |
-          node jd_xgyl.js
+          node jd_xtg.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE1 }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
