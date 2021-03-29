@@ -124,7 +124,7 @@ async function drawLiveActivity(lotteryId, liveId) {
       data = JSON.parse(data)
       if (data && data.data && data.data.lotteryResult !== undefined) {
         $.bean = null
-        await $.wait(2*1000)
+        await $.wait(10*1000)
         switch (data.data.lotteryResult) {
           default:
           case 0:
