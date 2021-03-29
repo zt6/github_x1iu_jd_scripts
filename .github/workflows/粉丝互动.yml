@@ -3,7 +3,7 @@ name: 直播领京豆
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0-15/2 * * *'
+    - cron: '0 0-15/5 * * *'
   watch:
     types: started
 jobs:
