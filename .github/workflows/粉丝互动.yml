@@ -1,23 +1,18 @@
-name: 粉丝互动
+name: 直播领京豆
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: '5 4,10,17 * * *'
+    - cron: '0 0-15/2 * * *'
   watch:
     types: started
 jobs:
   build:
-
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          repository: x1iu/bbaase
-          ref: 'main'
-          token: ${{ secrets.PAT }}        
+        uses: actions/checkout@v2      
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v1
         with:
@@ -32,17 +27,13 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行 【粉丝互动】'
+      - name: '运行'
         run: |
-          curl https://raw.githubusercontent.com/shuye73/MyActions/main/jd_fanslove.js -o jd_fanslove.js
-          node jd_fanslove.js
+          node jd_live_lottery_social.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
           JD_DEBUG: ${{ secrets.JD_DEBUG }}
           JOY_FEED_COUNT: ${{ secrets.JOY_FEED_COUNT }}
-          JOY_RUN_FLAG: ${{ secrets.JOY_RUN_FLAG }}
-          JOY_RUN_NOTIFY: ${{ secrets.JOY_RUN_NOTIFY }}
-          JOY_TEAM_LEVEL: ${{ secrets.JOY_TEAM_LEVEL }}
           PUSH_KEY: ${{ secrets.PUSH_KEY }}
           BARK_PUSH: ${{ secrets.BARK_PUSH }}
           BARK_SOUND: ${{ secrets.BARK_SOUND }}
