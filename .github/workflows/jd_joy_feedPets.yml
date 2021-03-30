@@ -59,7 +59,7 @@ jobs:
       - name: 'wait'
         run: |
           sleep 3h
-          sleep 5m
+          sleep 2m
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
