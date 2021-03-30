@@ -112,7 +112,7 @@ async function getLiveActivity(liveId = null) {
       }else{
         console.log(`被检测到，等待60秒`)
         await $.wait(60*1000)
-        await getLiveActivity(liveId)
+        // await getLiveActivity(liveId)
       }
       resolve()
     })
