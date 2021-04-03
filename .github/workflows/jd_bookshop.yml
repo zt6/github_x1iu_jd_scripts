@@ -31,9 +31,18 @@ jobs:
       - name: npm install
         run: |
           npm install
-      - name: '运行口袋书店'
+      - name: '运行美丽研究院'
         run: |
           node jd_beauty.js
+        env:
+          JD_COOKIE: ${{ secrets.JD_COOKIE }}
+          JD_DEBUG: ${{ secrets.JD_DEBUG }}
+          PUSH_KEY: ${{ secrets.PUSH_KEY }}
+          JD_USER_AGENT: ${{ secrets.BEAUTY_USER_AGENT }}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN }}
+          TG_USER_ID: ${{ secrets.TG_USER_ID }}
+      - name: '运行口袋书店'
+        run: |
           node jd_bookshop.js
         env:
           JD_COOKIE: ${{ secrets.JD_COOKIE }}
