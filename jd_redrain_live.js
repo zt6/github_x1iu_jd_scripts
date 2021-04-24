@@ -54,6 +54,7 @@ if ($.isNode()) {
 }else {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
+cookiesArr = cookiesArr.reverse()
 const JD_API_HOST = 'https://api.m.jd.com/api';
 !(async () => {
   if (!cookiesArr[0]) {
@@ -190,8 +191,10 @@ function receiveRedRain() {
             } else if (data.subCode === '8') {
               console.log(`今日次数已满`)
               message += `领取失败，本场已领过`;
+              process.exit(0)
             } else {
               console.log(`异常：${JSON.stringify(data)}`)
+              process.exit(0)
             }
           }
         }
