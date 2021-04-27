@@ -147,7 +147,7 @@ done
 for ((a=1; a <= 17; a++))
 do
     node /ql/scripts/jd_joy_reward.js &
-    sleep 0.18
+    sleep 0.16
 done
 
 if [ $(date "+%H") -ge 16 ]; then
