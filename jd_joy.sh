@@ -130,7 +130,7 @@ node /ql/scripts/jd_joy_reward.js
 
 while [  $(date "+%S") -lt 55  ]
 do
-  sleep 0.01
+  sleep 0.1
 done
 
 for ((a=1; a <= 10; a++))
@@ -141,13 +141,13 @@ done
 
 while [  $(date "+%S") -lt 58  ]
 do
-  sleep 0.01
+  sleep 0.1
 done
 
-for ((a=1; a <= 15; a++))
+for ((a=1; a <= 17; a++))
 do
     node /ql/scripts/jd_joy_reward.js &
-    sleep 0.2
+    sleep 0.18
 done
 
 if [ $(date "+%H") -ge 16 ]; then
