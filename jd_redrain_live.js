@@ -20,7 +20,7 @@ cron "0,30,31 20-23/1 * * *" script-path=https://gitee.com/lxk0301/jd_scripts/ra
 超级直播间红包雨 = type=cron,script-path=https://gitee.com/lxk0301/jd_scripts/raw/master/jd_live_redrain.js, cronexpr="0,30,31 20-23/1 * * *", timeout=3600, enable=true
 */
 const $ = new Env('超级直播间红包雨');
-let allMessage = '', id = 'RRA4RhWMc159kA62qLbaEa88evE7owb';
+let allMessage = '', id = 'RRAAYPHu6s5pWzYMqmfNygvvgJTKdq';
 let bodyList = {
   "20": {
     "url": "https://api.m.jd.com/client.action?functionId=liveActivityV946&uuid=8888888&client=apple&clientVersion=9.4.1&st=1618812732092&sign=8318f3a94b1558bc17244912dd2bff69&sv=101",
