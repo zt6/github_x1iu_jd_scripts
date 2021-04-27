@@ -136,10 +136,21 @@ done
 for ((a=1; a <= 10; a++))
 do
     node /ql/scripts/jd_joy_reward.js &
-    sleep 0.5
+    sleep 0.3
 done
 
-if [ $(date "+%H") -eq 16 ]; then
+while [  $(date "+%S") -lt 58  ]
+do
+  sleep 0.01
+done
+
+for ((a=1; a <= 15; a++))
+do
+    node /ql/scripts/jd_joy_reward.js &
+    sleep 0.2
+done
+
+if [ $(date "+%H") -ge 16 ]; then
   export JD_JOY_REWARD_NAME="20"
 fi
 
