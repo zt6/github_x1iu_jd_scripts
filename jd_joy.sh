@@ -128,7 +128,7 @@ Import_Conf $1 && Set_Env
 
 node /ql/scripts/jd_joy_reward.js
 
-while [  $(date "+%S") -lt 57  ]
+while [  $(date "+%S") -lt 56  ]
 do
   sleep 0.1
 done
@@ -136,7 +136,7 @@ done
 for ((a=1; a <= 5; a++))
 do
     node /ql/scripts/$1.js &
-    sleep 1
+    sleep 0.7
 done
 
 # while [  $(date "+%S") -lt 58  ]
