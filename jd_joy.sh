@@ -128,32 +128,32 @@ Import_Conf $1 && Set_Env
 
 node /ql/scripts/jd_joy_reward.js
 
-while [  $(date "+%S") -lt 55  ]
+while [  $(date "+%S") -lt 57  ]
 do
   sleep 0.1
 done
 
-for ((a=1; a <= 10; a++))
+for ((a=1; a <= 5; a++))
 do
-    node /ql/scripts/jd_joy_reward.js &
-    sleep 0.3
+    node /ql/scripts/$1.js &
+    sleep 1
 done
 
-while [  $(date "+%S") -lt 58  ]
-do
-  sleep 0.1
-done
+# while [  $(date "+%S") -lt 58  ]
+# do
+#   sleep 0.1
+# done
 
-for ((a=1; a <= 17; a++))
-do
-    node /ql/scripts/jd_joy_reward.js &
-    sleep 0.16
-done
+# for ((a=1; a <= 17; a++))
+# do
+#     node /ql/scripts/$1.js &
+#     sleep 0.16
+# done
 
 if [ $(date "+%H") -ge 16 ]; then
   export JD_JOY_REWARD_NAME="20"
 fi
 
-node /ql/scripts/jd_joy_reward.js
+node /ql/scripts/$1.js
 
 sleep 10
