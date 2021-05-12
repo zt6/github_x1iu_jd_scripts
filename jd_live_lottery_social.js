@@ -12,6 +12,7 @@ if ($.isNode()) {
   cookiesArr = [$.getdata('CookieJD'), $.getdata('CookieJD2'), ...jsonParse($.getdata('CookiesJD') || "[]").map(item => item.cookie)].filter(item => !!item);
 }
 cookiesArr = cookiesArr.reverse()
+console.log(cookiesArr)
 let lotteryArr = []
 !(async () => {
   cookie = cookiesArr[0]
@@ -102,7 +103,7 @@ async function getLiveActivity(liveId = null) {
                 await drawLiveActivity(lottery.data.lotteryId, liveId)
               lotteryArr.push(Number(lottery.data.lotteryId))
             } else {
-              await $.wait(4000)
+              await $.wait(Math.floor(Math.random() * 5000) + 2000)
               console.log(`抽奖活动已抽过`)
             }
           } else {
@@ -126,7 +127,7 @@ async function drawLiveActivity(lotteryId, liveId) {
       data = JSON.parse(data)
       if (data && data.data && data.data.lotteryResult !== undefined) {
         $.bean = null
-        await $.wait(10*1000)
+        await $.wait(Math.floor(Math.random() * 5000) + 5000)
         switch (data.data.lotteryResult) {
           default:
           case 0:
